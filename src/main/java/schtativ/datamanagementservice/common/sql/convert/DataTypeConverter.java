@@ -1,6 +1,6 @@
 package schtativ.datamanagementservice.common.sql.convert;
 
-import schtativ.datamanagementservice.common.sql.entity.DataType;
+import schtativ.datamanagementservice.common.sql.entity.type.DataType;
 
 /**
  * Data type converter

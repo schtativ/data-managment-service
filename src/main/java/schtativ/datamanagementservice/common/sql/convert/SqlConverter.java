@@ -4,6 +4,7 @@ import schtativ.datamanagementservice.common.sql.entity.Column;
 import schtativ.datamanagementservice.common.sql.entity.ForeignKey;
 import schtativ.datamanagementservice.common.sql.entity.PrimaryKey;
 import schtativ.datamanagementservice.common.sql.entity.TableName;
+import schtativ.datamanagementservice.common.sql.entity.type.DataTypeInfo;
 
 /**
  * Converts entities to sql parts of query
@@ -40,4 +41,6 @@ public interface SqlConverter {
      * @return Sql text for query
      */
     String toSql(PrimaryKey primaryKey);
+
+    <T extends DataTypeInfo> String toSql(DataTypeInfo dataTypeInfo, Class<T> clazz);
 }

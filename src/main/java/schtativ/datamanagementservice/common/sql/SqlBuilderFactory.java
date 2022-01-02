@@ -11,7 +11,7 @@ public class SqlBuilderFactory {
 
     private final SqlConverter sqlConverter;
 
-    public SqlBuilderFactory(ApplicationContext context, @Qualifier("DbmsName") String dbmsName) {
+    public SqlBuilderFactory(ApplicationContext context, @Qualifier("dbmsName") String dbmsName) {
         this.sqlConverter = CommonHelper.getNeccessaryBean(context, dbmsName, SqlConverter.class);
     }
 

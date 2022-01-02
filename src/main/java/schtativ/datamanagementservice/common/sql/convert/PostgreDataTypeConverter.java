@@ -2,7 +2,7 @@ package schtativ.datamanagementservice.common.sql.convert;
 
 import org.springframework.stereotype.Component;
 import schtativ.datamanagementservice.common.DbmsName;
-import schtativ.datamanagementservice.common.sql.entity.DataType;
+import schtativ.datamanagementservice.common.sql.entity.type.DataType;
 import schtativ.datamanagementservice.common.DbmsComponent;
 
 import java.util.Hashtable;
@@ -11,7 +11,6 @@ import java.util.Map;
 /**
  * Data type converter for PostgreSQL
  */
-@Component
 @DbmsComponent(name = DbmsName.POSTGRESQL)
 public class PostgreDataTypeConverter implements DataTypeConverter {
 
@@ -24,7 +23,7 @@ public class PostgreDataTypeConverter implements DataTypeConverter {
         types = new Hashtable<>();
         types.put(DataType.BOOLEAN, "boolean");
         types.put(DataType.DATETIME, "timestamp");
-        types.put(DataType.DECIMAL, "numeric(28, 12)");
+        types.put(DataType.DECIMAL, "numeric");
         types.put(DataType.INT, "integer");
         types.put(DataType.LONG, "bigint");
         types.put(DataType.SHORT, "smallint");

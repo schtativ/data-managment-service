@@ -17,8 +17,8 @@ public class CommonHelper {
      */
     public static <T> T getNeccessaryBean(ApplicationContext context, String dbmsName, Class<T> clazz) {
         AtomicReference<T> tempBean = new AtomicReference<>();
-        Map<String, Object> beansWithAnnotation = context.getBeansWithAnnotation(DbmsComponent.class);
-        beansWithAnnotation.forEach((s, b) -> {
+        Map<String, T> beans = context.getBeansOfType(clazz);
+        beans.forEach((s, b) -> {
             if (clazz.isInstance(b)) {
                 DbmsComponent annotation = AnnotationUtils.findAnnotation(b.getClass(), DbmsComponent.class);
                 if (annotation != null) {

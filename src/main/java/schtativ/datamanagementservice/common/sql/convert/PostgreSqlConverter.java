@@ -1,19 +1,26 @@
 package schtativ.datamanagementservice.common.sql.convert;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import schtativ.datamanagementservice.common.DbmsComponent;
 import schtativ.datamanagementservice.common.DbmsName;
 import schtativ.datamanagementservice.common.sql.entity.Column;
 import schtativ.datamanagementservice.common.sql.entity.ForeignKey;
 import schtativ.datamanagementservice.common.sql.entity.PrimaryKey;
 import schtativ.datamanagementservice.common.sql.entity.TableName;
-import schtativ.datamanagementservice.common.DbmsComponent;
+import schtativ.datamanagementservice.common.sql.entity.type.CharDataTypeInfo;
+import schtativ.datamanagementservice.common.sql.entity.type.DataTypeInfo;
+import schtativ.datamanagementservice.common.sql.entity.type.FloatingPointDataTypeInfo;
 
+@Component
 @DbmsComponent(name = DbmsName.POSTGRESQL)
 public class PostgreSqlConverter implements SqlConverter {
 
     private final DataTypeConverter dataTypeConverter;
 
-    public PostgreSqlConverter() {
-        dataTypeConverter = new PostgreDataTypeConverter();
+    @Autowired
+    public PostgreSqlConverter(DataTypeConverter dataTypeConverter) {
+        this.dataTypeConverter = dataTypeConverter;
     }
 
     @Override
@@ -21,11 +28,7 @@ public class PostgreSqlConverter implements SqlConverter {
         StringBuilder builder = new StringBuilder();
         builder.append(column.getName());
         builder.append(" ");
-        if (column.getCharacterMaximumLength() != null) {
-            builder.append(String.format("%s(%d)", dataTypeConverter.get(column.getDataType()), column.getCharacterMaximumLength()));
-        } else {
-            builder.append(dataTypeConverter.get(column.getDataType()));
-        }
+        builder.append(toSql(column.getDataTypeInfo(), column.getDataTypeInfo().getClass()));
 
         if (!column.getIsNullable()) {
             builder.append(" not");
@@ -57,5 +60,21 @@ public class PostgreSqlConverter implements SqlConverter {
                 dataTypeConverter.get(primaryKey.getType()),
                 primaryKey.getTable().getSchema(),
                 primaryKey.getTable().getName());
+    }
+
+    @Override
+    public <T extends DataTypeInfo> String toSql(DataTypeInfo dataTypeInfo, Class<T> clazz) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(dataTypeConverter.get(dataTypeInfo.getType()));
+        if (clazz.equals(CharDataTypeInfo.class)) {
+            builder.append(String.format("(%d)", ((CharDataTypeInfo) dataTypeInfo).getCharacterMaximumLength()));
+        }
+
+        if (clazz.equals(FloatingPointDataTypeInfo.class)) {
+            FloatingPointDataTypeInfo floatingPointInfo = (FloatingPointDataTypeInfo) dataTypeInfo;
+            builder.append(String.format("(%d,%d)", floatingPointInfo.getSignMaxCount(), floatingPointInfo.getSignScaleCount()));
+        }
+
+        return builder.toString();
     }
 }

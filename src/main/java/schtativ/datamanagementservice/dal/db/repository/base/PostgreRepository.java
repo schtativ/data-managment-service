@@ -7,13 +7,11 @@ import org.springframework.stereotype.Repository;
 import schtativ.datamanagementservice.common.DbmsComponent;
 import schtativ.datamanagementservice.common.DbmsName;
 import schtativ.datamanagementservice.common.sql.entity.Column;
-import schtativ.datamanagementservice.common.sql.entity.DataType;
+import schtativ.datamanagementservice.common.sql.entity.type.CharDataTypeInfo;
+import schtativ.datamanagementservice.common.sql.entity.type.DataType;
 
 import javax.sql.DataSource;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Repository
 @DbmsComponent(name = DbmsName.POSTGRESQL)
@@ -31,7 +29,7 @@ public class PostgreRepository extends JdbcDaoSupport implements DataStorageRepo
                 "from INFORMATION_SCHEMA.COLUMNS where table_name = ?";
 
         List<Map<String, Object>> maps = this.getJdbcTemplate().queryForList(sql, tableName);
-        return Set.of(new Column("f", DataType.STRING, 1, true)).stream().toList();
+        return Arrays.asList(new Column("f", new CharDataTypeInfo(DataType.STRING, 255), true));
     }
 
     @Override

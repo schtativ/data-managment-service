@@ -1,6 +1,7 @@
 package schtativ.datamanagementservice.common.sql.entity;
 
 import lombok.Getter;
+import schtativ.datamanagementservice.common.sql.entity.type.DataTypeInfo;
 
 /**
  * Information about column
@@ -13,14 +14,9 @@ public class Column {
     protected String name;
 
     /**
-     * Type of value
+     * Information about type of value
      */
-    protected DataType dataType;
-
-    /**
-     * Maximum length for a string value
-     */
-    protected Integer characterMaximumLength;
+    protected DataTypeInfo dataTypeInfo;
 
     /**
      * Can value be null
@@ -31,15 +27,13 @@ public class Column {
      * Init required fields data
      *
      * @param name                   Name of column
-     * @param dataType               Data type of column
-     * @param characterMaximumLength Maximum length when char datatype
+     * @param dataTypeInfo               Data type of column
      * @param isNullable             Value may be null
      * @return Initialized column
      */
-    public Column(String name, DataType dataType, Integer characterMaximumLength, Boolean isNullable) {
+    public Column(String name, DataTypeInfo dataTypeInfo, Boolean isNullable) {
         this.name = name;
-        this.dataType = dataType;
-        this.characterMaximumLength = characterMaximumLength;
+        this.dataTypeInfo = dataTypeInfo;
         this.isNullable = isNullable;
     }
 

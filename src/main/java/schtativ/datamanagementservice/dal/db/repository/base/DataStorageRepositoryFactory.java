@@ -19,8 +19,8 @@ public class DataStorageRepositoryFactory {
     private final DataStorageRepository dataStorageRepository;
     private final String dbmsName;
 
-    public DataStorageRepositoryFactory(@Qualifier("dataSource") DataSource dataSource, ApplicationContext context) {
-        dbmsName = getDbmsName(dataSource);
+    public DataStorageRepositoryFactory(@Qualifier("dbmsName") String dbmsName, ApplicationContext context) {
+        this.dbmsName = dbmsName;
 
         dataStorageRepository = getNeccessaryDataStorageRepository(context, dbmsName);
         if (dataStorageRepository == null) {
@@ -37,26 +37,6 @@ public class DataStorageRepositoryFactory {
      */
     private DataStorageRepository getNeccessaryDataStorageRepository(ApplicationContext context, String dbmsName) {
         return CommonHelper.getNeccessaryBean(context, dbmsName, DataStorageRepository.class);
-    }
-
-    /**
-     * Get DBMS name, extracted from connection string
-     *
-     * @param dataSource Data Source
-     * @return DBMS name
-     */
-    private String getDbmsName(DataSource dataSource) {
-        if (!(dataSource instanceof HikariDataSource)) {
-            throw new IllegalArgumentException("Type of DataSource is unexpected.");
-        }
-        String jdbcUrl = ((HikariDataSource) dataSource).getJdbcUrl();
-        Pattern pattern = Pattern.compile("jdbc:(.*?):.*");
-        Matcher matcher = pattern.matcher(jdbcUrl);
-        if (matcher.find()) {
-            return matcher.group(1);
-        } else {
-            throw new IllegalArgumentException("Name of DBMS is not defined.");
-        }
     }
 
     public DataStorageRepository get() {

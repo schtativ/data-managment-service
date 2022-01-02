@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import schtativ.datamanagementservice.common.sql.SqlBuilderFactory;
 import schtativ.datamanagementservice.common.sql.entity.Column;
-import schtativ.datamanagementservice.common.sql.entity.DataType;
+import schtativ.datamanagementservice.common.sql.entity.type.DataType;
 
 import java.util.Collection;
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import schtativ.datamanagementservice.common.sql.convert.SqlConverter;
 import schtativ.datamanagementservice.common.sql.entity.*;
+import schtativ.datamanagementservice.common.sql.entity.type.DataType;
 
 import java.util.Collection;
 import java.util.List;

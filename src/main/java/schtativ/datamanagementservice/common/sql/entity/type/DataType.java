@@ -1,4 +1,4 @@
-package schtativ.datamanagementservice.common.sql.entity;
+package schtativ.datamanagementservice.common.sql.entity.type;
 
 /**
  * Type of data

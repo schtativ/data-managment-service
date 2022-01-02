@@ -2,6 +2,7 @@ package schtativ.datamanagementservice.common.sql.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import schtativ.datamanagementservice.common.sql.entity.type.DataType;
 
 @Getter
 @AllArgsConstructor

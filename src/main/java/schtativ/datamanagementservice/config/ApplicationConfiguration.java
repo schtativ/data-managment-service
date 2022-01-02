@@ -1,8 +1,12 @@
 package schtativ.datamanagementservice.config;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import schtativ.datamanagementservice.common.CommonHelper;
+import schtativ.datamanagementservice.common.sql.convert.DataTypeConverter;
 
 import javax.sql.DataSource;
 import java.util.regex.Matcher;
@@ -12,7 +16,7 @@ import java.util.regex.Pattern;
 public class ApplicationConfiguration {
 
     @Bean
-    String DbmsName(DataSource dataSource) {
+    String dbmsName(DataSource dataSource) {
         if (!(dataSource instanceof HikariDataSource)) {
             throw new IllegalArgumentException("Type of DataSource is unexpected.");
         }
@@ -24,5 +28,10 @@ public class ApplicationConfiguration {
         } else {
             throw new IllegalArgumentException("Name of DBMS is not defined.");
         }
+    }
+
+    @Bean
+    DataTypeConverter dataTypeConverter(ApplicationContext context, @Qualifier("dbmsName") String dbmsName) {
+        return CommonHelper.getNeccessaryBean(context, dbmsName, DataTypeConverter.class);
     }
 }
