@@ -1,14 +1,10 @@
 package schtativ.datamanagementservice.dal.db.repository.base;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import schtativ.datamanagementservice.common.CommonHelper;
-
-import javax.sql.DataSource;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import schtativ.datamanagementservice.common.DbmsName;
 
 /**
  * Factory that produce data storage repository by data storage system name
@@ -17,11 +13,8 @@ import java.util.regex.Pattern;
 public class DataStorageRepositoryFactory {
 
     private final DataStorageRepository dataStorageRepository;
-    private final String dbmsName;
 
-    public DataStorageRepositoryFactory(@Qualifier("dbmsName") String dbmsName, ApplicationContext context) {
-        this.dbmsName = dbmsName;
-
+    public DataStorageRepositoryFactory(@Qualifier("dbmsName") DbmsName dbmsName, ApplicationContext context) {
         dataStorageRepository = getNeccessaryDataStorageRepository(context, dbmsName);
         if (dataStorageRepository == null) {
             throw new IllegalArgumentException("DBMS Repository is not finded by name.");
@@ -35,7 +28,7 @@ public class DataStorageRepositoryFactory {
      * @param dbmsName DBMS name
      * @return Data Storage Repository or null
      */
-    private DataStorageRepository getNeccessaryDataStorageRepository(ApplicationContext context, String dbmsName) {
+    private DataStorageRepository getNeccessaryDataStorageRepository(ApplicationContext context, DbmsName dbmsName) {
         return CommonHelper.getNeccessaryBean(context, dbmsName, DataStorageRepository.class);
     }
 

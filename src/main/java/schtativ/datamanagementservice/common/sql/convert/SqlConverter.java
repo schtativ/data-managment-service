@@ -43,4 +43,11 @@ public interface SqlConverter {
     String toSql(PrimaryKey primaryKey);
 
     <T extends DataTypeInfo> String toSql(DataTypeInfo dataTypeInfo, Class<T> clazz);
+
+    /**
+     * Return boolean value from specific value of DBMS (examples: Y/N for PostgreSql, 1/0 for MSSQL)
+     * @param value Value from DBMS
+     * @return Boolean value
+     */
+    Boolean booleanValueFromSql(String value);
 }

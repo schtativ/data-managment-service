@@ -7,29 +7,32 @@ import org.springframework.stereotype.Repository;
 import schtativ.datamanagementservice.common.DbmsComponent;
 import schtativ.datamanagementservice.common.DbmsName;
 import schtativ.datamanagementservice.common.sql.entity.Column;
-import schtativ.datamanagementservice.common.sql.entity.type.CharDataTypeInfo;
-import schtativ.datamanagementservice.common.sql.entity.type.DataType;
+import schtativ.datamanagementservice.dal.db.mapper.ColumnMapper;
 
 import javax.sql.DataSource;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 @Repository
 @DbmsComponent(name = DbmsName.POSTGRESQL)
 public class PostgreRepository extends JdbcDaoSupport implements DataStorageRepository {
 
+    private final ColumnMapper mapper;
+
     @Autowired
-    public PostgreRepository(@Qualifier("dataSource") DataSource dataSource) {
+    public PostgreRepository(@Qualifier("dataSource") DataSource dataSource, ColumnMapper mapper) {
         this.setDataSource(dataSource);
+        this.mapper = mapper;
     }
 
     @Override
     public List<Column> getTableInfo(String tableName) {
-        String sql = "select column_name, data_type, character_maximum_length, " +
+        String sql = "select column_name, udt_name, character_maximum_length, " +
                 "column_default, is_nullable " +
                 "from INFORMATION_SCHEMA.COLUMNS where table_name = ?";
 
-        List<Map<String, Object>> maps = this.getJdbcTemplate().queryForList(sql, tableName);
-        return Arrays.asList(new Column("f", new CharDataTypeInfo(DataType.STRING, 255), true));
+        List<Column> columns = this.getJdbcTemplate().query(sql, mapper, tableName);
+        return columns;
     }
 
     @Override

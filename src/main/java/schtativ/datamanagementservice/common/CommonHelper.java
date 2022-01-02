@@ -15,7 +15,7 @@ public class CommonHelper {
      * @param clazz    Class of bean
      * @return Bean or null
      */
-    public static <T> T getNeccessaryBean(ApplicationContext context, String dbmsName, Class<T> clazz) {
+    public static <T> T getNeccessaryBean(ApplicationContext context, DbmsName dbmsName, Class<T> clazz) {
         AtomicReference<T> tempBean = new AtomicReference<>();
         Map<String, T> beans = context.getBeansOfType(clazz);
         beans.forEach((s, b) -> {
@@ -23,7 +23,7 @@ public class CommonHelper {
                 DbmsComponent annotation = AnnotationUtils.findAnnotation(b.getClass(), DbmsComponent.class);
                 if (annotation != null) {
                     DbmsName name = annotation.name();
-                    if (name.toString().equalsIgnoreCase(dbmsName)) {
+                    if (name.equals(dbmsName)) {
                         tempBean.set(clazz.cast(b));
                     }
                 }
